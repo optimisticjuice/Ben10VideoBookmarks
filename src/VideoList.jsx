@@ -2,6 +2,8 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { VideoContext } from "./VideoContext";
+import VideoPlayer from "./VideoPlayer.jsx";
+import { Link } from "react-router-dom";
 
 export default function VideoList() {
   const { dispatch } = useContext(VideoContext);
@@ -26,16 +28,16 @@ export default function VideoList() {
       <div>
         <h2>Select a Video</h2>
         <h4>Number of videos chosen : </h4>
-        <label style={{ width: "80%" }}>
-          <input
-            type="range"
-            min={1}
-            max={40}
-            value={limit}
-            style={{ width: "100%" }}
-            onChange={(e) => setLimit(e.target.value)}
-          />
-        </label>
+
+        <input
+          type="range"
+          min={1}
+          max={40}
+          value={limit}
+          style={{ width: "80%" }}
+          onChange={(e) => setLimit(e.target.value)}
+        />
+
         <h4>{limit}</h4>
         <ol>
           {videos.map((video) => (
@@ -59,6 +61,13 @@ export default function VideoList() {
           ))}
         </ol>
       </div>
+      <br />
+      <VideoPlayer />
+      <br />
+      <h5>View My Bookmarks Here 👇</h5>
+      <p>
+        <Link to="/bookmarks">Go to Bookmarks</Link>
+      </p>
     </>
   );
 }
