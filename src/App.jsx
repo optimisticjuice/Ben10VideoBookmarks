@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import VideoProvider from "./VideoProvider.jsx";
-import VideoPlayer from "./VideoPlayer";
 import BookmarkVideos from "./BookmarkVideos";
 import VideoList from "./VideoList.jsx";
 
