@@ -1,6 +1,6 @@
+// VideoProvider ties together the global video state using React Context
 import { useReducer, useEffect } from "react";
 import { VideoContext } from "./VideoContext.js";
-import axios from "axios";
 // 1️⃣ Define action types for our reducer
 const SET_BOOKMARKS = "SET_BOOKMARKS";
 const ADD_BOOKMARK = "ADD_BOOKMARK";
@@ -12,16 +12,21 @@ const initialState = {
   selectedVideo: null,
 };
 
+// Reducer actions update the bookmarks array and selected video
+
 // 3️⃣ Reducer handles adding/removing bookmarks
 function videoReducer(state, action) {
   switch (action.type) {
     case SET_BOOKMARKS:
       return { ...state, bookmarks: action.payload };
     case ADD_BOOKMARK:
-      return { bookmarks: [...state.bookmarks, action.payload] };
+      // keep existing state when adding a bookmark time
+      return { ...state, bookmarks: [...state.bookmarks, action.payload] };
     case REMOVE_BOOKMARK:
+      // bookmarks is just an array of times so we compare directly
       return {
-        bookmarks: state.bookmarks.filter((b) => b.time !== action.payload),
+        ...state,
+        bookmarks: state.bookmarks.filter((b) => b !== action.payload),
       };
     case SET_VIDEO:
       return { ...state, selectedVideo: action.payload };
@@ -35,12 +40,10 @@ export default function VideoProvider({ children }) {
   const [state, dispatch] = useReducer(videoReducer, initialState);
 
   useEffect(() => {
-    // 🌐 Fetch bookmarks from your API
-    const fetchBookmarks = async () => {
-      const res = await axios.get("/api/bookmarks");
-      dispatch({ type: SET_BOOKMARKS, payload: res.data });
-    };
-    fetchBookmarks();
+    // Load any saved bookmark times from localStorage on start
+    const saved = JSON.parse(localStorage.getItem("bookmarks") || "[]");
+    const times = saved.map((b) => b.time);
+    dispatch({ type: SET_BOOKMARKS, payload: times });
   }, []);
 
   return (

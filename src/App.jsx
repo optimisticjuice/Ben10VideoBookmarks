@@ -1,3 +1,4 @@
+// Root application component wiring up routes and context
 import { Routes, Route } from "react-router-dom";
 import VideoProvider from "./VideoProvider.jsx";
 import BookmarkVideos from "./BookmarkVideos";

@@ -1,3 +1,4 @@
+// Simple mock API server used during development
 const express = require("express");
 const cors = require("cors");
 const app = express();

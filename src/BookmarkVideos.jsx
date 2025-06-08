@@ -1,3 +1,4 @@
+// Shows thumbnails for all unique videos that have bookmarks
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -5,9 +6,10 @@ export default function BookmarkVideos() {
   const [bookmarks, setBookmarks] = useState([]);
 
   useEffect(() => {
-    // Get all bookmarks as array of objects: { videoId, time }
+    // Grab all saved bookmarks from localStorage in the form
+    // of objects like { videoId, time }
     const saved = JSON.parse(localStorage.getItem("bookmarks") || "[]");
-    // Only keep unique video IDs
+    // Only keep unique video IDs so we show each video once
     const uniqueVideoIds = Array.from(new Set(saved.map((b) => b.videoId)));
     setBookmarks(uniqueVideoIds);
   }, []);

@@ -1,12 +1,14 @@
+// Plays the selected video and allows adding bookmarks
 import { useRef, useContext } from "react";
 import { VideoContext } from "./VideoContext";
 
 export default function VideoPlayer() {
+  // Reference to the iframe element so we could access the player API if needed
   const iframeRef = useRef(null);
   const { state, dispatch } = useContext(VideoContext);
 
   const addBookmark = () => {
-    // ⚡ Assume 10s offset for demo (could use Dailymotion's SDK/postMessage)
+    // ⚡ Demo bookmark time value. In a real app we'd read current time from the player
     const currentTime = Math.floor(Math.random() * 100);
     dispatch({ type: "ADD_BOOKMARK", payload: currentTime });
 
