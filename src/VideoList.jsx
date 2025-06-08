@@ -1,4 +1,5 @@
 // VideoList.js
+// Lists available videos from Dailymotion and lets the user select one
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { VideoContext } from "./VideoContext";
@@ -8,12 +9,15 @@ import { Link } from "react-router-dom";
 export default function VideoList() {
   const { dispatch } = useContext(VideoContext);
   const [videos, setVideos] = useState([]);
-  const [limit, setLimit] = useState(5); // 👈 Slider-controlled limit
+  // Slider-controlled number of results to fetch
+  const [limit, setLimit] = useState(5);
   const [benMore, setBenMore] = useState("");
   const baseSearch = "Ben 10";
-  const searchQuery = `${baseSearch} + " " + ${benMore}`;
+  // Build the search query string for the API
+  const searchQuery = `${baseSearch} ${benMore}`;
   useEffect(() => {
-    // 🛰️ Fetch videos from Dailymotion's public API
+    // 🛰️ Fetch videos from Dailymotion's public API whenever the search
+    // query or result limit changes
     axios
       .get(
         `https://api.dailymotion.com/videos?fields=id,title,thumbnail_url&limit=${limit}&search=${searchQuery}`
@@ -35,7 +39,7 @@ export default function VideoList() {
           max={40}
           value={limit}
           style={{ width: "80%" }}
-          onChange={(e) => setLimit(e.target.value)}
+          onChange={(e) => setLimit(parseInt(e.target.value, 10))}
         />
 
         <h4>{limit}</h4>
@@ -47,11 +51,13 @@ export default function VideoList() {
                 alt={video.title}
                 style={{ width: "15px", height: "20px" }}
                 onClick={() =>
+                  // Selecting a thumbnail sets the current video
                   dispatch({ type: "SET_VIDEO", payload: video.id })
                 }
               />
               <button
                 onClick={() =>
+                  // Same action when clicking the title button
                   dispatch({ type: "SET_VIDEO", payload: video.id })
                 }
               >
